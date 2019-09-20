@@ -60,3 +60,121 @@ def T(self):
         transpose.append(new_row)
     return transpose
     # TODO - your code here
+
+def __add__(self,other):
+"""
+Defines the behavior of the + operator
+"""
+if self.h != other.h or self.w != other.w:
+    raise(ValueError, "Matrices can only be added if the dimensions are the same")
+#
+# TODO - your code here
+#
+matrix_sum = []
+for i in range(self.h):
+    row = []
+    for j in range(self.w):
+        row.append(self.g[i][j] + other.g[i][j])
+    matrix_sum.append(row)
+return matrix_sum
+# TODO - your code here
+
+def __neg__(self):
+    """
+    Defines the behavior of - operator (NOT subtraction)
+
+    Example:
+
+    > my_matrix = Matrix([ [1, 2], [3, 4] ])
+    > negative  = -my_matrix
+    > print(negative)
+      -1.0  -2.0
+      -3.0  -4.0
+    """
+    #
+    # TODO - your code here
+    #
+    matrix_neg = []
+    for i in range(self.h):
+        row = []
+        for j in range(self.w):
+            row.append(0-self.g[i][j])
+        matrix_neg.append(row)
+    return matrix_neg
+    # TODO - your code here
+
+def __sub__(self, other):
+    """
+    Defines the behavior of - operator (as subtraction)
+    """
+    #
+    # TODO - your code here
+    #
+    matrix_sub = []
+    for i in range(self.h):
+        row = []
+        for j in range(self.w):
+            row.append(self.g[i][j] - other.g[i][j])
+        matrix_sub.append(row)
+    return matrix_sub
+    # TODO - your code here
+
+# TODO - your code here
+# Utility functions for matrix multiplication
+def get_row(matrix, row):
+    return matrix[row]
+def get_col(matrix, col):
+    col = []
+    for i in range(len(matrix)):
+        col.append(matrix[i][col])
+    return col
+def dot_product(row_a, row_b):
+    sum = 0
+    for i in range(len(row_a)):
+        sum = sum + (row_a[i] * row_b[i])
+    return sum
+# TODO - your code here
+
+def __mul__(self, other):
+    """
+    Defines the behavior of * operator (matrix multiplication)
+    """
+    #
+    # TODO - your code here
+    #
+    final_matrix = []
+    for i in range(self.h):
+        temp_row = []
+        for j in range(other.w):
+            # take dot-product of row of
+            # matrix in 1st arg with col of
+            # matrix in 2nd arg
+            temp_row.append(dot_product(get_row(self.g, i), get_col(other.g, j)))
+        final_matrix.append(temp_row)
+    return final_matrix
+    # TODO - your code here
+
+def __rmul__(self, other):
+    """
+    Called when the thing on the left of the * is not a matrix.
+
+    Example:
+
+    > identity = Matrix([ [1,0], [0,1] ])
+    > doubled  = 2 * identity
+    > print(doubled)
+      2.0  0.0
+      0.0  2.0
+    """
+    if isinstance(other, numbers.Number):
+        #
+        # TODO - your code here
+        #
+        scaled_matrix = []
+        for i in range(self.h):
+            temp_row = []
+            for j in range(self.w):
+                temp_row.append(other * self.g[i][j])
+            scaled_matrix.append(temp_row)
+        return scaled_matrix
+        # TODO - your code here
