@@ -39,8 +39,11 @@ def inverse(self):
     if self.h > 2:
         raise(NotImplementedError, "inversion not implemented for matrices larger than 2x2.")
     # TODO - your code here
+    inverse = []
     if self.h == 1:
-        return 1/self.g[0][0]
+        temp = []
+        temp.append(1/self.g[0][0])
+        inverse.append(temp)
     else:
         identity_matrix = identity(self.h)
         det_term = 1/self.determinant()
@@ -69,7 +72,7 @@ def inverse(self):
             for j in range(len(sub_term[i])):
                 temp_row.append(det_term * sub_term[i][j])
             inverse.append(temp_row)
-        return inverse
+    return Matrix(inverse)
     # TODO - your code here
 
 def T(self):
@@ -83,7 +86,7 @@ def T(self):
         for row in range(self.h):
             new_row.append(self.g[row][col])
         transpose.append(new_row)
-    return transpose
+    return Matrix(transpose)
     # TODO - your code here
 
 def __add__(self,other):
@@ -101,7 +104,7 @@ def __add__(self,other):
         for j in range(self.w):
             row.append(self.g[i][j] + other.g[i][j])
         matrix_sum.append(row)
-    return matrix_sum
+    return Matrix(matrix_sum)
     # TODO - your code here
 
 def __neg__(self):
@@ -125,7 +128,7 @@ def __neg__(self):
         for j in range(self.w):
             row.append(0-self.g[i][j])
         matrix_neg.append(row)
-    return matrix_neg
+    return Matrix(matrix_neg)
     # TODO - your code here
 
 def __sub__(self, other):
@@ -141,7 +144,7 @@ def __sub__(self, other):
         for j in range(self.w):
             row.append(self.g[i][j] - other.g[i][j])
         matrix_sub.append(row)
-    return matrix_sub
+    return Matrix(matrix_sub)
     # TODO - your code here
 
 # TODO - your code here
@@ -176,7 +179,7 @@ def __mul__(self, other):
             # matrix in 2nd arg
             temp_row.append(dot_product(get_row(self.g, i), get_col(other.g, j)))
         final_matrix.append(temp_row)
-    return final_matrix
+    return Matrix(final_matrix)
     # TODO - your code here
 
 def __rmul__(self, other):
@@ -201,5 +204,5 @@ def __rmul__(self, other):
             for j in range(self.w):
                 temp_row.append(other * self.g[i][j])
             scaled_matrix.append(temp_row)
-        return scaled_matrix
+        return Matrix(scaled_matrix)
         # TODO - your code here
