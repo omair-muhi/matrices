@@ -22,7 +22,7 @@ def trace(self):
         raise(ValueError, "Cannot calculate the trace of a non-square matrix.")
 
     # TODO - your code here
-    sum = []
+    sum = 0.0
     for i in range(self.h):
         for j in range(self.w):
             if i == j:
@@ -38,13 +38,38 @@ def inverse(self):
         raise(ValueError, "Non-square Matrix does not have an inverse.")
     if self.h > 2:
         raise(NotImplementedError, "inversion not implemented for matrices larger than 2x2.")
-
     # TODO - your code here
     if self.h == 1:
         return 1/self.g[0][0]
     else:
         identity_matrix = identity(self.h)
-        return (1/determinant(self.g))*((trace(self.g)*identity_matrix)-self.g)
+        det_term = 1/self.determinant()
+        trace_term = self.trace()
+        # implement intermediate scaling step locally
+        # trace_x_I = trace_term * identity_matrix
+        trace_x_I = []
+        for i in range(len(self.g)):
+            temp_row = []
+            for j in range(len(self.g[i])):
+                temp_row.append(trace_term * identity_matrix[i][j])
+            trace_x_I.append(temp_row)
+        # implement sub-traction locally
+        # sub_term = trace_x_I - self.g
+        sub_term = []
+        for i in range(len(trace_x_I)):
+            temp_row = []
+            for j in range(len(trace_x_I[i])):
+                temp_row.append(trace_x_I[i][j] - self.g[i][j])
+            sub_term.append(temp_row)
+        # implement final scaling step locally
+        # inverse = det_term * sub_term
+        inverse = []
+        for i in range(len(sub_term)):
+            temp_row = []
+            for j in range(len(sub_term[i])):
+                temp_row.append(det_term * sub_term[i][j])
+            inverse.append(temp_row)
+        return inverse
     # TODO - your code here
 
 def T(self):
@@ -62,22 +87,22 @@ def T(self):
     # TODO - your code here
 
 def __add__(self,other):
-"""
-Defines the behavior of the + operator
-"""
-if self.h != other.h or self.w != other.w:
-    raise(ValueError, "Matrices can only be added if the dimensions are the same")
-#
-# TODO - your code here
-#
-matrix_sum = []
-for i in range(self.h):
-    row = []
-    for j in range(self.w):
-        row.append(self.g[i][j] + other.g[i][j])
-    matrix_sum.append(row)
-return matrix_sum
-# TODO - your code here
+    """
+    Defines the behavior of the + operator
+    """
+    if self.h != other.h or self.w != other.w:
+        raise(ValueError, "Matrices can only be added if the dimensions are the same")
+    #
+    # TODO - your code here
+    #
+    matrix_sum = []
+    for i in range(self.h):
+        row = []
+        for j in range(self.w):
+            row.append(self.g[i][j] + other.g[i][j])
+        matrix_sum.append(row)
+    return matrix_sum
+    # TODO - your code here
 
 def __neg__(self):
     """
@@ -121,12 +146,12 @@ def __sub__(self, other):
 
 # TODO - your code here
 # Utility functions for matrix multiplication
-def get_row(matrix, row):
-    return matrix[row]
-def get_col(matrix, col):
+def get_row(matrix, row_num):
+    return matrix[row_num]
+def get_col(matrix, col_num):
     col = []
     for i in range(len(matrix)):
-        col.append(matrix[i][col])
+        col.append(matrix[i][col_num])
     return col
 def dot_product(row_a, row_b):
     sum = 0
